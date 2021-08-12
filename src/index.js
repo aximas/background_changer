@@ -2,9 +2,67 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-const Hall = () => {
+// const Hall = () => {
 
-  const generateRandomColor = () => {
+//   const generateRandomColor = () => {
+//     const letters = '0123456789ABCDEF';
+  
+//     let color = '#';
+  
+//     for (let i = 0; i < 6; i++) {
+//     color += letters[Math.floor(Math.random()*16)]
+//     }
+  
+//    return color
+//   }
+
+//   let seconds = new Date().getSeconds()
+
+//   if(!(seconds % 4)) {
+//     var setBackgroundColor = generateRandomColor()
+//   }
+  
+//   const divStyle = {
+//     width: 120,
+//     height: 120,
+//     backgroundColor: setBackgroundColor
+//   }
+//     return(
+//       <div style={divStyle}></div>
+//     )
+// }
+
+class Hall extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  
+  componentDidMount() {
+      this.timerID = setInterval(
+        () => this.generateRandomColor(),
+        1000
+      )
+  }
+
+  componentWillMount() {
+    clearInterval(this.timerID)
+  }
+
+  
+  seconds() {
+    let seconds = this.state.date.getSeconds()
+
+    if(!(seconds % 4)) {
+      return true
+    }
+    else {
+      return false
+    }
+}
+
+    generateRandomColor() {
     const letters = '0123456789ABCDEF';
   
     let color = '#';
@@ -12,66 +70,97 @@ const Hall = () => {
     for (let i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random()*16)]
     }
-  
-   return color
+    return color
   }
 
-  let seconds = new Date().getSeconds()
-
-  if(!(seconds % 4)) {
-    var setBackgroundColor = generateRandomColor()
-  }
-  
-  const divStyle = {
-    width: 120,
-    height: 120,
-    backgroundColor: setBackgroundColor
-  }
+  divStyle() {
+    let style = { width: 120,
+      height: 120,
+      backgroundColor: this.generateRandomColor()};
     return(
-      <div style={divStyle}></div>
+      style
     )
+  }
+
+  render() {
+    return <div style={this.divStyle()}></div>
+  }
+
 }
 
-function Home(props) {
-  let hour = props.time.getHours();
-  let minutes = props.time.getMinutes();
-  let seconds = props.time.getSeconds();
 
-  if (hour.toString().length < 2) {
-    hour = `0${hour}`;
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
   }
-  else if (minutes.toString().length < 2) {
-    minutes = `0${minutes}`;
+
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    )
   }
-  else if (seconds.toString().length < 2) {
-    seconds = `0${seconds}`;
+
+  componentWillMount() {
+    clearInterval(this.timerID)
   }
-  return (
-    <h1>{hour}:{minutes}:{seconds}</h1>
-  );
+
+  tick() {
+    this.setState({
+      date: new Date()
+    })
+  }
+
+  hour() {
+    let hour = this.state.date.getHours();
+    if (hour.toString().length < 2) {
+      hour = `0${hour}`;
+    }
+    return hour;
+  }
+
+  minutes() {
+    let minutes = this.state.date.getMinutes();
+    if (minutes.toString().length < 2) {
+      minutes = `0${minutes}`;
+    }
+    return minutes;
+  }
+
+  seconds() {
+    let seconds = this.state.date.getSeconds();
+    if (seconds.toString().length < 2) {
+      seconds = `0${seconds}`;
+    }
+    return seconds;
+  }
+
+
+  render() {
+    return(
+        <h1>{this.hour()}:{this.minutes()}:{this.seconds()}</h1>
+    )
+  }
+
 }
 
 const App = () => {
   return(
     <div>
-    <Home time={new Date} />
+    <Clock />
     <Hall />
     </div>
   )
 }
 
-const tick = () => {
-  return (
+
     ReactDOM.render(
       <App />,
       document.getElementById('root')
     )
-  )
-}
 
-setInterval(() => {
-  tick()
-}, 1000)
+
 
 
 // If you want to start measuring performance in your app, pass a function
