@@ -2,66 +2,38 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-// const Hall = () => {
-
-//   const generateRandomColor = () => {
-//     const letters = '0123456789ABCDEF';
-  
-//     let color = '#';
-  
-//     for (let i = 0; i < 6; i++) {
-//     color += letters[Math.floor(Math.random()*16)]
-//     }
-  
-//    return color
-//   }
-
-//   let seconds = new Date().getSeconds()
-
-//   if(!(seconds % 4)) {
-//     var setBackgroundColor = generateRandomColor()
-//   }
-  
-//   const divStyle = {
-//     width: 120,
-//     height: 120,
-//     backgroundColor: setBackgroundColor
-//   }
-//     return(
-//       <div style={divStyle}></div>
-//     )
-// }
-
 class Hall extends React.Component {
   constructor(props) {
     super(props);
     this.state = {date: new Date()};
   }
-
   
   componentDidMount() {
-      this.timerID = setInterval(
-        () => this.generateRandomColor(),
-        1000
-      )
+    this.backgroundChangerTimer = setInterval(
+      () => {
+        let seconds = new Date().getSeconds()
+
+        if(!(seconds % 4)) {
+          return this.tick()
+        }
+        else {
+          return false
+        }
+      },
+       1000
+     )
   }
 
   componentWillMount() {
-    clearInterval(this.timerID)
+    clearInterval(this.backgroundChangerTimer)
   }
 
+  tick() {
+    this.setState({
+      date: new Date()
+    })
+  }
   
-  seconds() {
-    let seconds = this.state.date.getSeconds()
-
-    if(!(seconds % 4)) {
-      return true
-    }
-    else {
-      return false
-    }
-}
-
     generateRandomColor() {
     const letters = '0123456789ABCDEF';
   
@@ -89,7 +61,7 @@ class Hall extends React.Component {
 }
 
 
-class Clock extends React.Component {
+class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {date: new Date()};
@@ -148,7 +120,7 @@ class Clock extends React.Component {
 const App = () => {
   return(
     <div>
-    <Clock />
+    <Home />
     <Hall />
     </div>
   )
