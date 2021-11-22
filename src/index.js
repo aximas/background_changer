@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import App from "./App";
+import store from "./redux/store";
 
-class Hall extends React.Component {
+
+export class Hall extends React.Component {
   constructor(props) {
     super(props);
     this.state = {date: new Date()};
@@ -61,7 +64,7 @@ class Hall extends React.Component {
 }
 
 
-class Home extends React.Component {
+export  class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {date: new Date()};
@@ -117,20 +120,10 @@ class Home extends React.Component {
 
 }
 
-const App = () => {
-  return(
-    <div>
-    <Home />
-    <Hall />
-    </div>
-  )
-}
-
-
     ReactDOM.render(
-      <App />,
+      <App store={store} />,
       document.getElementById('root')
-    )
+    );
 
 
 
